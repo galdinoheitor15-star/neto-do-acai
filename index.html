@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Neto do Açaí · Carpina</title>
+  <meta name="description" content="Açaí cremoso do Neto, em Carpina-PE. Monte sua tigela e peça pelo WhatsApp. Todo dia é dia de Neto.">
+  <meta name="theme-color" content="#47254f">
+  <link rel="icon" href="img/ig/perfil.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="topbar" id="topbar">
+    <div class="wrap topbar__inner">
+      <a href="#inicio" class="brand" aria-label="Neto do Açaí, início">
+        <span class="stamp stamp--sm" data-stamp></span>
+        <span class="brand__name">neto <small>do</small> açaí</span>
+      </a>
+      <nav class="nav" aria-label="Seções">
+        <a href="#cardapio">Cardápio</a>
+        <a href="#historia">Nossa história</a>
+        <a href="#onde">Onde estamos</a>
+      </nav>
+      <div class="topbar__actions">
+        <span class="status" id="status"><i></i><span>—</span></span>
+        <button class="cart-btn" id="cartOpen" aria-label="Abrir sacola">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <span class="cart-btn__count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <div class="wrap hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow" data-in>Carpina · PE</p>
+          <h1 class="hero__title" data-in>Todo dia é<br>dia de <em>Neto.</em></h1>
+          <p class="hero__lead" data-in>Açaí cremoso, do jeitinho que você gosta. Itens, frutas e calda grátis em toda tigela. Monte o seu e receba em casa.</p>
+          <div class="hero__cta" data-in>
+            <a href="#cardapio" class="btn btn--primary">Fazer pedido</a>
+            <a href="#onde" class="btn btn--ghost">Retirar na loja</a>
+          </div>
+          <ul class="facts" data-in>
+            <li><strong>14h – 22h</strong><span>todos os dias</span></li>
+            <li><strong>26–50 min</strong><span>entrega</span></li>
+            <li><strong>Sem mínimo</strong><span>de pedido</span></li>
+          </ul>
+        </div>
+
+        <div class="hero__art" aria-hidden="true">
+          <div class="orbit">
+            <div class="stamp stamp--xl" data-stamp data-spin></div>
+            <img class="float float--a" src="img/trufado-avela.webp" alt="">
+            <img class="float float--b" src="img/tigela500.webp" alt="">
+            <img class="float float--c" src="img/garrafa.webp" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Bora tomar açaí meu povo</span><span>💜</span><span>Açaí na garrafa</span><span>💜</span><span>Trufado de Ninho</span><span>💜</span><span>Cupuaçu na garrafa</span><span>💜</span><span>Pote de 2 litros</span><span>💜</span>
+          <span>Bora tomar açaí meu povo</span><span>💜</span><span>Açaí na garrafa</span><span>💜</span><span>Trufado de Ninho</span><span>💜</span><span>Cupuaçu na garrafa</span><span>💜</span><span>Pote de 2 litros</span><span>💜</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section class="menu" id="cardapio">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Cardápio</p>
+          <h2>Escolha, monte, peça.</h2>
+          <p class="muted">Toque num item pra montar do seu jeito. O pedido chega pra gente direto no WhatsApp.</p>
+        </div>
+      </div>
+      <div class="tabs-wrap">
+        <div class="wrap">
+          <div class="tabs" id="tabs" role="tablist"></div>
+        </div>
+      </div>
+      <div class="wrap" id="menuList"></div>
+    </section>
+
+    <!-- STORY -->
+    <section class="story" id="historia">
+      <div class="wrap story__inner">
+        <div class="story__media" data-reveal>
+          <img src="img/ig/p04.jpg" alt="Neto segurando uma tigela de açaí na loja" loading="lazy">
+          <img src="img/ig/p08.jpg" alt="Neto com o pote de 2 litros" loading="lazy">
+        </div>
+        <div class="story__copy" data-reveal>
+          <p class="eyebrow">Nossa história</p>
+          <h2>Açaí feito com cuidado, pertinho de você.</h2>
+          <p>O Neto do Açaí nasceu no Cajá, em Carpina, com uma ideia simples: açaí cremoso de verdade, montado na hora e com tudo que você gosta, sem pesar no bolso.</p>
+          <p>Da tigela clássica ao trufado de Ninho, do açaí na garrafa ao pote de 2 litros pra dividir com a galera. E no calorão de Pernambuco, a gente segue firme: <em>bora tomar açaí, meu povo.</em></p>
+          <p class="sign">Obrigado por comprar, por indicar e por confiar. 💜</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTAGRAM -->
+    <section class="insta">
+      <div class="wrap">
+        <div class="section-head section-head--row" data-reveal>
+          <div>
+            <p class="eyebrow">No Instagram</p>
+            <h2>@netodoacaibr</h2>
+          </div>
+          <a class="btn btn--ghost" href="https://www.instagram.com/netodoacaibr/" target="_blank" rel="noopener">Seguir · 7,4 mil</a>
+        </div>
+      </div>
+      <div class="reels" id="reels"></div>
+    </section>
+
+    <!-- LOCATION -->
+    <section class="where" id="onde">
+      <div class="wrap where__inner" data-reveal>
+        <div>
+          <p class="eyebrow">Onde estamos</p>
+          <h2>Cajá, Carpina · PE</h2>
+          <p class="muted">Delivery pra Carpina e região, ou passa aqui e retira no balcão.</p>
+        </div>
+        <dl class="where__list">
+          <div><dt>Horário</dt><dd>Todos os dias, das 14h às 22h</dd></div>
+          <div><dt>WhatsApp</dt><dd><a href="https://wa.me/5581998009853" target="_blank" rel="noopener">(81) 99800-9853</a></dd></div>
+          <div><dt>Mapa</dt><dd><a href="https://www.google.com/maps/search/?api=1&query=Neto+do+A%C3%A7a%C3%AD+Caj%C3%A1+Carpina+PE" target="_blank" rel="noopener">Abrir no Google Maps →</a></dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span class="stamp stamp--sm" data-stamp></span>
+      <p>Neto do Açaí · Carpina-PE<br><span class="muted">Todo dia é dia de Neto.</span></p>
+      <a href="https://www.instagram.com/netodoacaibr/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </footer>
+
+  <!-- Mobile cart bar -->
+  <button class="cartbar" id="cartBar" aria-label="Ver sacola">
+    <span class="cartbar__count" id="cartBarCount">0</span>
+    <span>Ver sacola</span>
+    <strong id="cartBarTotal">R$ 0,00</strong>
+  </button>
+
+  <!-- Product sheet -->
+  <div class="overlay" id="overlay" hidden></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+    <button class="sheet__close" data-close aria-label="Fechar">×</button>
+    <div class="sheet__scroll">
+      <div class="sheet__hero">
+        <img id="sheetImg" alt="">
+      </div>
+      <div class="sheet__body">
+        <h3 id="sheetTitle"></h3>
+        <p class="muted" id="sheetDesc"></p>
+        <div id="sheetGroups"></div>
+        <label class="field">
+          <span class="field__label">Alguma observação?</span>
+          <textarea id="sheetObs" rows="2" placeholder="Ex.: caprichar no leite em pó 😄"></textarea>
+        </label>
+      </div>
+    </div>
+    <div class="sheet__foot">
+      <div class="qty">
+        <button id="qtyMinus" aria-label="Diminuir">−</button>
+        <span id="qtyVal">1</span>
+        <button id="qtyPlus" aria-label="Aumentar">+</button>
+      </div>
+      <button class="btn btn--primary btn--grow" id="sheetAdd">Adicionar <span id="sheetTotal"></span></button>
+    </div>
+  </div>
+
+  <!-- Cart drawer -->
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+    <div class="drawer__head">
+      <h3 id="drawerTitle">Sua sacola</h3>
+      <button class="sheet__close sheet__close--static" data-close aria-label="Fechar">×</button>
+    </div>
+    <div class="drawer__scroll">
+      <div id="cartItems"></div>
+      <form id="checkout" class="checkout" novalidate>
+        <h4>Seus dados</h4>
+        <label class="field"><span class="field__label">Nome</span><input name="nome" required autocomplete="name" placeholder="Como te chamamos?"></label>
+
+        <div class="seg" role="radiogroup" aria-label="Tipo de pedido">
+          <label><input type="radio" name="tipo" value="Entrega" checked><span>Entrega</span></label>
+          <label><input type="radio" name="tipo" value="Retirada"><span>Retirar na loja</span></label>
+        </div>
+
+        <div id="addr" class="addr">
+          <div class="addr__inner">
+            <label class="field"><span class="field__label">Rua e número</span><input name="rua" autocomplete="street-address" placeholder="Rua, nº"></label>
+            <div class="field-row">
+              <label class="field"><span class="field__label">Bairro</span><input name="bairro" placeholder="Bairro"></label>
+              <label class="field"><span class="field__label">Referência</span><input name="ref" placeholder="Opcional"></label>
+            </div>
+          </div>
+        </div>
+
+        <h4>Pagamento</h4>
+        <div class="seg seg--3" role="radiogroup" aria-label="Forma de pagamento">
+          <label><input type="radio" name="pag" value="Pix" checked><span>Pix</span></label>
+          <label><input type="radio" name="pag" value="Cartão"><span>Cartão</span></label>
+          <label><input type="radio" name="pag" value="Dinheiro"><span>Dinheiro</span></label>
+        </div>
+        <label class="field" id="trocoField" hidden><span class="field__label">Troco para</span><input name="troco" inputmode="decimal" placeholder="Ex.: 50"></label>
+      </form>
+    </div>
+    <div class="drawer__foot">
+      <div class="totals">
+        <span>Subtotal</span><strong id="cartTotal">R$ 0,00</strong>
+      </div>
+      <p class="muted tiny" id="feeNote">Taxa de entrega confirmada no WhatsApp.</p>
+      <button class="btn btn--wa btn--grow" id="sendOrder">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"/></svg>
+        Enviar pedido no WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
