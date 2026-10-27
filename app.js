@@ -90,7 +90,9 @@
   const brl = n => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const byId = Object.fromEntries(MENU.flatMap(c => c.items).map(i => [i.id, i]));
-  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // A loja quer o site sempre animado; só o parallax respeita "reduzir movimento" do sistema.
+  const reduceMotion = false;
+  const calmParallax = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const store = {
     get() { try { return JSON.parse(localStorage.getItem("neto-cart")) || []; } catch { return []; } },
@@ -101,13 +103,13 @@
   const STAMP = `
   <svg viewBox="0 0 200 200" role="img" aria-label="Neto do Açaí">
     <defs><path id="ringPath" d="M100,100 m-68,0 a68,68 0 1,1 136,0 a68,68 0 1,1 -136,0"/></defs>
-    <circle cx="100" cy="100" r="100" fill="#47254f"/>
+    <circle class="s-outer" cx="100" cy="100" r="100"/>
     <g class="stamp__ring">
-      <text fill="#fff" font-size="29" font-weight="700"><textPath href="#ringPath" textLength="420" lengthAdjust="spacing">neto do açaí • neto do açaí •</textPath></text>
+      <text class="s-ring" font-size="29" font-weight="700"><textPath href="#ringPath" textLength="420" lengthAdjust="spacing">neto do açaí • neto do açaí •</textPath></text>
     </g>
-    <circle cx="100" cy="100" r="55" fill="#fff"/>
-    <text x="100" y="98" text-anchor="middle" fill="#47254f" font-size="36" font-weight="700" letter-spacing="-1">neto</text>
-    <text x="100" y="128" text-anchor="middle" fill="#47254f" font-weight="700" letter-spacing="-0.5"><tspan font-size="15" font-weight="600">do </tspan><tspan font-size="30">açaí</tspan></text>
+    <circle class="s-inner" cx="100" cy="100" r="55"/>
+    <text class="s-word" x="100" y="98" text-anchor="middle" font-size="36" font-weight="700" letter-spacing="-1">neto</text>
+    <text class="s-word" x="100" y="128" text-anchor="middle" font-weight="700" letter-spacing="-0.5"><tspan font-size="15" font-weight="600">do </tspan><tspan font-size="30">açaí</tspan></text>
   </svg>`;
   $$("[data-stamp]").forEach((el, i) => {
     el.innerHTML = STAMP.replaceAll("ringPath", "ringPath" + i);
@@ -193,6 +195,14 @@
   document.fonts?.ready.then(() => movePill($(".tab.is-active")));
   movePill($(".tab.is-active"));
 
+  /* split section headings into words for the mask reveal */
+  $$("[data-reveal] h2").forEach(h => {
+    const text = h.textContent.trim();
+    h.setAttribute("aria-label", text);
+    h.innerHTML = `<span aria-hidden="true">${text.split(/\s+/).map((w, i) =>
+      `<span class="w"><span style="--i:${i}">${esc(w)}</span></span>`).join(" ")}</span>`;
+  });
+
   /* reveal on scroll */
   const rev = new IntersectionObserver(entries => {
     entries.forEach(en => {
@@ -207,6 +217,59 @@
   $$("[data-reveal]").forEach(el => rev.observe(el));
 
   requestAnimationFrame(() => document.body.classList.add("is-ready"));
+
+  /* follower counter */
+  const counter = $("[data-count]");
+  new IntersectionObserver(([en], obs) => {
+    if (!en.isIntersecting) return;
+    obs.disconnect();
+    const end = +counter.dataset.count;
+    if (reduceMotion) return;
+    const t0 = performance.now(), dur = 1600;
+    const tick = now => {
+      const p = Math.min(1, (now - t0) / dur);
+      counter.textContent = Math.round(end * (1 - Math.pow(1 - p, 4))).toLocaleString("pt-BR");
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, { threshold: 0.6 }).observe(counter);
+
+  /* scroll progress + story parallax */
+  const progress = $("#progress");
+  const storyImgs = $$(".story__media img");
+  let ticking = false;
+  function onScroll() {
+    ticking = false;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+    if (calmParallax) return;
+    storyImgs.forEach((img, i) => {
+      const r = img.getBoundingClientRect();
+      const center = r.top + r.height / 2 - innerHeight / 2;
+      img.style.setProperty("--sy", (center * (i ? -0.08 : 0.06)).toFixed(1));
+    });
+  }
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
+  /* hero parallax following the pointer */
+  const orbit = $(".orbit");
+  if (!calmParallax && matchMedia("(pointer: fine)").matches) {
+    $(".hero").addEventListener("pointermove", e => {
+      orbit.style.setProperty("--px", (e.clientX / innerWidth - 0.5).toFixed(3));
+      orbit.style.setProperty("--py", (e.clientY / innerHeight - 0.5).toFixed(3));
+    });
+    $(".hero").addEventListener("pointerleave", () => { orbit.style.setProperty("--px", 0); orbit.style.setProperty("--py", 0); });
+  }
+
+  /* spotlight on cards */
+  list.addEventListener("pointermove", e => {
+    const card = e.target.closest(".card");
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty("--mx", e.clientX - r.left + "px");
+    card.style.setProperty("--my", e.clientY - r.top + "px");
+  });
 
   /* ---------- Overlay / modal management ---------- */
   const overlay = $("#overlay");
@@ -364,10 +427,34 @@
       opts: sel.filter(s => s.picked.length).map(({ g, picked }) => ({ group: g.label || g.title, names: picked.map(p => p.name) })),
       obs: $("#sheetObs").value.trim(),
     });
-    saveCart();
+    flyToCart($("#sheetImg"));
+    store.set(cart);
+    renderCart(false);
+    setTimeout(() => renderCart(true), reduceMotion ? 0 : 700);
     close();
     toast(`${current.name} na sacola 💜`);
   });
+
+  /* product image flies into the bag */
+  function flyToCart(img) {
+    if (reduceMotion) return;
+    const from = img.getBoundingClientRect();
+    const mobile = innerWidth <= 640;
+    const target = mobile ? { left: 26, top: innerHeight - 64, width: 38, height: 38 } : $(".cart-btn").getBoundingClientRect();
+    const size = Math.min(from.width, from.height);
+    const clone = img.cloneNode();
+    clone.className = "fly";
+    Object.assign(clone.style, { left: from.left + (from.width - size) / 2 + "px", top: from.top + (from.height - size) / 2 + "px", width: size + "px", height: size + "px" });
+    document.body.appendChild(clone);
+    const dx = target.left + target.width / 2 - (from.left + from.width / 2);
+    const dy = target.top + target.height / 2 - (from.top + from.height / 2);
+    const s = 28 / size;
+    clone.animate([
+      { transform: "translate(0,0) scale(1)", opacity: 1 },
+      { transform: `translate(${dx * 0.55}px, ${dy * 0.25 - 80}px) scale(${0.5 + s / 2})`, opacity: 1, offset: 0.5 },
+      { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 0.6 },
+    ], { duration: 750, easing: "cubic-bezier(0.5, 0, 0.3, 1)" }).finished.then(() => clone.remove());
+  }
 
   /* ---------- Cart ---------- */
   let cart = store.get().filter(l => byId[l.id]);
@@ -396,7 +483,7 @@
     $("#cartItems").innerHTML = count ? cart.map(l => {
       const it = byId[l.id];
       return `
-      <div class="line" data-key="${l.key}">
+      <div class="line" data-key="${l.key}" style="--i:${cart.indexOf(l)}">
         <img src="${it.img}" alt="">
         <div>
           <div class="line__title">${it.name}</div>
@@ -427,7 +514,12 @@
     }
   });
 
-  const openCart = () => { renderCart(false); open(drawer); };
+  const openCart = () => {
+    renderCart(false);
+    drawer.classList.add("is-entering");
+    setTimeout(() => drawer.classList.remove("is-entering"), 1200);
+    open(drawer);
+  };
   $("#cartOpen").addEventListener("click", openCart);
   $("#cartBar").addEventListener("click", openCart);
 
