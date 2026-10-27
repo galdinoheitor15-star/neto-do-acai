@@ -75,13 +75,12 @@
   ];
 
   const REELS = [
-    { img: "img/ig/p09.jpg", url: "https://www.instagram.com/reel/De7XNQpKO6d/" },
-    { img: "img/ig/p08.jpg", url: "https://www.instagram.com/reel/De2U-3xKsE3/" },
-    { img: "img/ig/p04.jpg", url: "https://www.instagram.com/reel/De-ZxJmxu9t/" },
-    { img: "img/ig/p07.jpg", url: "https://www.instagram.com/reel/De4zg_6KK0D/" },
-    { img: "img/ig/p10.jpg", url: "https://www.instagram.com/reel/De2UKPzKI9Z/" },
-    { img: "img/ig/p01.jpg", url: "https://www.instagram.com/reel/DfAlSYZqJLt/" },
-    { img: "img/ig/p02.jpg", url: "https://www.instagram.com/reel/DfAhaYMK2oB/" },
+    { id: "enjoar", caption: "E tem como enjoar?" },
+    { id: "pote2l", caption: "Já conhece o pote de 2 litros?" },
+    { id: "morango", caption: "Açaí com morango 🍓" },
+    { id: "calorao", caption: "Mesmo no calorão" },
+    { id: "calor35", caption: "35 graus? Açaí!" },
+    { id: "banana", caption: "Banana fresquinha" },
   ];
 
   /* ---------- Helpers ---------- */
@@ -153,11 +152,15 @@
       </div>
     </div>`).join("");
 
+  const ICON_MUTED = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="m16 9 5 6m0-6-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+  const ICON_SOUND = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
   $("#reels").innerHTML = REELS.map(r => `
-    <a class="reel" href="${r.url}" target="_blank" rel="noopener" data-reveal aria-label="Ver vídeo no Instagram">
-      <img src="${r.img}" alt="" loading="lazy">
-      <span class="reel__play"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg></span>
-    </a>`).join("");
+    <figure class="reel" data-reveal>
+      <video muted loop playsinline preload="none" poster="video/${r.id}.jpg"><source src="video/${r.id}.mp4" type="video/mp4"></video>
+      <figcaption>${r.caption}</figcaption>
+      <button class="reel__sound" type="button" aria-label="Ligar som">${ICON_MUTED}</button>
+      <span class="reel__bar"><i></i></span>
+    </figure>`).join("");
 
   /* tabs: sliding pill + scroll-spy */
   const pill = $("#pill");
@@ -218,6 +221,43 @@
 
   requestAnimationFrame(() => document.body.classList.add("is-ready"));
 
+  /* ---------- Vídeos: tocam sozinhos quando aparecem; toque liga o som ---------- */
+  const reels = $$(".reel");
+  function muteAll(except) {
+    reels.forEach(fig => {
+      if (fig === except) return;
+      $("video", fig).muted = true;
+      fig.classList.remove("has-sound");
+      const b = $(".reel__sound", fig);
+      b.innerHTML = ICON_MUTED;
+      b.setAttribute("aria-label", "Ligar som");
+    });
+  }
+  reels.forEach(fig => {
+    const v = $("video", fig);
+    const bar = $(".reel__bar i", fig);
+    v.addEventListener("timeupdate", () => { if (v.duration) bar.style.transform = `scaleX(${v.currentTime / v.duration})`; });
+    v.addEventListener("playing", () => fig.classList.add("is-playing"));
+    fig.addEventListener("click", () => {
+      const turnOn = v.muted;
+      muteAll(fig);
+      v.muted = !turnOn;
+      fig.classList.toggle("has-sound", turnOn);
+      const b = $(".reel__sound", fig);
+      b.innerHTML = turnOn ? ICON_SOUND : ICON_MUTED;
+      b.setAttribute("aria-label", turnOn ? "Desligar som" : "Ligar som");
+      if (v.paused) v.play().catch(() => {});
+    });
+  });
+  const autoVideos = $$(".reel video, .story__media video");
+  const vio = new IntersectionObserver(entries => {
+    entries.forEach(({ target: v, isIntersecting }) => {
+      if (isIntersecting) { v.preload = "auto"; v.play().catch(() => {}); }
+      else v.pause();
+    });
+  }, { threshold: 0.35 });
+  autoVideos.forEach(el => vio.observe(el));
+
   /* follower counter */
   const counter = $("[data-count]");
   new IntersectionObserver(([en], obs) => {
@@ -236,7 +276,7 @@
 
   /* scroll progress + story parallax */
   const progress = $("#progress");
-  const storyImgs = $$(".story__media img");
+  const storyImgs = $$(".story__media video");
   let ticking = false;
   function onScroll() {
     ticking = false;
