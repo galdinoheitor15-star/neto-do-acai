@@ -114,6 +114,12 @@
     el.innerHTML = STAMP.replaceAll("ringPath", "ringPath" + i);
   });
 
+  /* ---------- Título: letras entram uma a uma ---------- */
+  let chIndex = 0;
+  $$("[data-letters]").forEach(el => {
+    el.innerHTML = [...el.textContent].map(c => `<span class="ch" style="--i:${chIndex++}">${c === " " ? " " : esc(c)}</span>`).join("");
+  });
+
   /* ---------- Status aberto/fechado ---------- */
   function updateStatus() {
     const h = new Date().getHours();

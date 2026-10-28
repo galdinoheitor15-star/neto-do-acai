@@ -192,8 +192,67 @@ p { margin: 0; }
 @keyframes drift2 { to { transform: translate(10vmax, -4vmax) scale(.92); } }
 
 .hero__inner { display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 40px; }
-.hero__title { font-size: clamp(54px, 8.6vw, 112px); font-weight: 700; letter-spacing: -0.035em; line-height: .95; margin-bottom: 26px; }
-.hero__title em { font-style: normal; color: var(--lilac); }
+/* ----- Título: VAMO TOMAR AÇAÍ MEU POVO ----- */
+.hero__title {
+  font-size: clamp(46px, 6.2vw, 84px); font-weight: 700; letter-spacing: -0.02em; line-height: .92;
+  text-transform: uppercase; margin-bottom: 28px;
+}
+.t-line { display: block; white-space: nowrap; }
+.t-top { color: var(--cream); }
+.ch { display: inline-block; white-space: pre; opacity: 0; transform: translateY(70%) rotate(10deg) scale(.8); }
+.is-ready .ch { animation: chIn 700ms cubic-bezier(.34, 1.56, .64, 1) forwards; animation-delay: calc(var(--i) * 40ms + 150ms); }
+@keyframes chIn { to { opacity: 1; transform: none; } }
+
+.t-acai { position: relative; display: inline-block; margin: .02em 0 .1em; }
+.t-acai__word {
+  display: inline-block;
+  font-size: 1.9em; line-height: .95; letter-spacing: -0.03em;
+  background: linear-gradient(100deg, #e9a8ff 0%, #b84dff 22%, #ff4fb8 45%, #b84dff 68%, #e9a8ff 90%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 28px rgba(214, 72, 255, .55));
+  opacity: 0; transform: scale(.4) rotate(-8deg); transform-origin: 30% 80%;
+}
+.is-ready .t-acai__word {
+  animation:
+    acaiIn 900ms 520ms cubic-bezier(.34, 1.56, .64, 1) forwards,
+    acaiFlow 5s 1.4s linear infinite,
+    acaiFloat 4s 1.4s ease-in-out infinite;
+}
+@keyframes acaiIn { 0% { opacity: 0; transform: scale(.4) rotate(-8deg); filter: blur(12px) drop-shadow(0 0 0 transparent); } 60% { opacity: 1; } 100% { opacity: 1; transform: none; filter: blur(0) drop-shadow(0 6px 28px rgba(214, 72, 255, .55)); } }
+@keyframes acaiFlow { to { background-position: -250% 0; } }
+@keyframes acaiFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+
+.t-swoosh {
+  position: absolute; left: 2%; right: -2%; bottom: -.04em; width: 100%; height: .28em; overflow: visible;
+}
+.t-swoosh path {
+  fill: none; stroke: var(--yellow); stroke-width: 7; stroke-linecap: round;
+  stroke-dasharray: 320; stroke-dashoffset: 320;
+  filter: drop-shadow(0 2px 8px rgba(248, 200, 31, .5));
+}
+.is-ready .t-swoosh path { animation: draw 800ms 1150ms var(--ease-out) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+.t-bottom { display: flex; align-items: center; gap: .18em; margin-top: .08em; }
+.t-sticker {
+  display: inline-block; white-space: nowrap; font-size: .82em; padding: .12em .34em .08em; border-radius: .22em;
+  background: var(--yellow); color: var(--acai-900);
+  box-shadow: 0 .08em 0 #b8890a, 0 14px 30px -10px rgba(248, 200, 31, .55);
+  opacity: 0; transform: rotate(-3deg) scale(.3);
+}
+.t-sticker .ch { opacity: 1; transform: none; animation: none !important; }
+.is-ready .t-sticker { animation: stickerIn 800ms 1350ms cubic-bezier(.34, 1.7, .64, 1) forwards; }
+@keyframes stickerIn { 0% { opacity: 0; transform: rotate(-14deg) scale(.3); } 100% { opacity: 1; transform: rotate(-3deg) scale(1); } }
+.t-heart { display: inline-block; font-size: .8em; opacity: 0; transform: scale(0); }
+.is-ready .t-heart { animation: heartIn 600ms 1900ms cubic-bezier(.34, 1.7, .64, 1) forwards, beat 1.4s 2.6s ease-in-out infinite; }
+@keyframes heartIn { to { opacity: 1; transform: scale(1); } }
+@keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.22); } 30% { transform: scale(1); } 45% { transform: scale(1.14); } }
+@media (hover: hover) and (pointer: fine) {
+  .t-sticker { transition: rotate 300ms var(--ease-out); }
+  .hero__title:hover .t-sticker { rotate: 4deg; }
+}
 .hero__lead { font-size: clamp(17px, 1.6vw, 19px); color: var(--muted); max-width: 30em; margin-bottom: 34px; }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 46px; }
 .facts { display: flex; gap: 36px; list-style: none; padding: 0; margin: 0; }
