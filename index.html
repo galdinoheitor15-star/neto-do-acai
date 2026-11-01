@@ -177,7 +177,7 @@
         <div id="sheetGroups"></div>
         <label class="field">
           <span class="field__label">Alguma observação?</span>
-          <textarea id="sheetObs" rows="2" placeholder="Ex.: caprichar no leite em pó 😄"></textarea>
+          <textarea maxlength="500" id="sheetObs" rows="2" placeholder="Ex.: caprichar no leite em pó 😄"></textarea>
         </label>
       </div>
     </div>
@@ -201,7 +201,7 @@
       <div id="cartItems"></div>
       <form id="checkout" class="checkout" novalidate>
         <h4>Seus dados</h4>
-        <label class="field"><span class="field__label">Nome</span><input name="nome" required autocomplete="name" placeholder="Como te chamamos?"></label>
+        <label class="field"><span class="field__label">Nome</span><input maxlength="80" name="nome" required autocomplete="name" placeholder="Como te chamamos?"></label>
 
         <div class="seg" role="radiogroup" aria-label="Tipo de pedido">
           <label><input type="radio" name="tipo" value="Entrega" checked><span>Entrega</span></label>
@@ -210,10 +210,10 @@
 
         <div id="addr" class="addr">
           <div class="addr__inner">
-            <label class="field"><span class="field__label">Rua e número</span><input name="rua" autocomplete="street-address" placeholder="Rua, nº"></label>
+            <label class="field"><span class="field__label">Rua e número</span><input maxlength="120" name="rua" autocomplete="street-address" placeholder="Rua, nº"></label>
             <div class="field-row">
-              <label class="field"><span class="field__label">Bairro</span><input name="bairro" placeholder="Bairro"></label>
-              <label class="field"><span class="field__label">Referência</span><input name="ref" placeholder="Opcional"></label>
+              <label class="field"><span class="field__label">Bairro</span><input maxlength="60" name="bairro" placeholder="Bairro"></label>
+              <label class="field"><span class="field__label">Referência</span><input maxlength="100" name="ref" placeholder="Opcional"></label>
             </div>
           </div>
         </div>
@@ -224,7 +224,7 @@
           <label><input type="radio" name="pag" value="Cartão"><span>Cartão</span></label>
           <label><input type="radio" name="pag" value="Dinheiro"><span>Dinheiro</span></label>
         </div>
-        <label class="field" id="trocoField" hidden><span class="field__label">Troco para</span><input name="troco" inputmode="decimal" placeholder="Ex.: 50"></label>
+        <label class="field" id="trocoField" hidden><span class="field__label">Troco para</span><input maxlength="12" name="troco" inputmode="decimal" placeholder="Ex.: 50"></label>
       </form>
     </div>
     <div class="drawer__foot">
